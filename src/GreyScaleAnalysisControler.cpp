@@ -104,36 +104,6 @@ Mat GreyScaleAnalysisControler::open_image(string filename) {
 	return image;
 }
 
-Mat GreyScaleAnalysisControler::writeHistDataToArray(int i_ROI) {
-	int n_files = this->get_filenumber(this->path, this->file_format);
-	double origin[2] = {this->origins.at<double>(i_ROI,0), this->origins.at<double>(i_ROI,1)};
-	double dimension[2] = {this->dimensions.at<double>(i_ROI,0), this->dimensions.at<double>(i_ROI,1)};
-	Size histDataSize(n_files, dimension[0] * dimension[1]);
-	Mat histData(dimension[0]*dimension[1], 1, CV_8UC3);
-	//cout << histData.cols << "\t" << histData.rows << endl;
-	//cout << "origin: " << origin[0] << "\t" << origin[1] << endl;
-	//cout << "dimension: " << dimension[0] << "\t" << dimension[1] << endl;
-	//cout << "-----------" << endl;
-	Rect ROI(origin[0], origin[1], dimension[0], dimension[1]); 
-	Size size(1, dimension[0] * dimension[1]);
-	for(int i = 0; i < n_files; i++) {
-		string filename = "../ImageData/" + this->get_filename(i, this->file_format);
-		Mat image_proc = this->open_image(filename);
-		Mat sub_image(image_proc, ROI);
-		if(!sub_image.isContinuous()) {
-			sub_image = sub_image.clone();
-		}
-		sub_image = sub_image.reshape(0, (int)dimension[0] * (int)dimension[1]);
-		cv::hconcat(histData, sub_image, histData);
-		//resize(sub_image, resize_image, size, cv::INTER_NEAREST);
-		//cout << "Info" << endl;
-		//cout << sub_image.at<Vec3b>(0, 0) << endl;
-		//cout << histData.cols << "\t" << histData.rows << endl;
-		//cout << "-------------------" << endl;	
-	}
-	return histData;
-}
-
 Mat GreyScaleAnalysisControler::get_histogram_data() {
 	int n_origins = this->origins.rows;
 	int n_files = this->get_filenumber(this->path, this->file_format);
@@ -143,10 +113,6 @@ Mat GreyScaleAnalysisControler::get_histogram_data() {
 	for(int i = 0; i < n_origins; i++) {
 		double origin[2] = {this->origins.at<double>(i, 0), this->origins.at<double>(i, 1)};
 		double dimension[2] = {this->dimensions.at<double>(i, 0), this->dimensions.at<double>(i, 1)};
-		Mat sub_mat = this->writeHistDataToArray(i);
-		GreyScaleCalculator calculator(origin, dimension);
-		Mat sub_hist_data = calculator.calc_greyscale(sub_mat);
-		cv::vconcat(total_hist_data, sub_hist_data, total_hist_data);
 	}
 	return total_hist_data;
 }

@@ -24,8 +24,7 @@ void GreyScaleCalculator::printInfo() {
 
 Mat GreyScaleCalculator::calc_greyscale(Mat image_in) {
 	Mat histArray;
-	cv::cuda::Stream& stream = cv::cuda::Stream::Null();
-	cv::cuda::reduce(image_in, histArray, 0, REDUCE_AVG, -1, stream);
+
 	return histArray;      
 }
 

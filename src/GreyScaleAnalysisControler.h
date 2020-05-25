@@ -20,7 +20,6 @@ public:
 	void write2CSV(Mat data_in);
 	string get_filename(int index_in, string file_format_in);
 	int get_filenumber(char* path_in, char* file_format_in);
-	Mat writeHistDataToArray(int i_ROI);
 	Mat get_histogram_data();
 	Mat open_image(string filename);
 };
