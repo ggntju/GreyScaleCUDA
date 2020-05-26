@@ -61,9 +61,6 @@ int main( int argc, char** argv )
 #include <string>
 #include <vector>
 
-#define VC_EXTRALEAN
-#define WIN32_LEAN_AND_MEAN
-
 using namespace std::chrono;
 
 void printReport(const std::string& name, const nanoseconds& dur, const nanoseconds& comp = nanoseconds(0)) {
@@ -94,7 +91,7 @@ int main() {
     constexpr char name[] = "test.jpg";
     // --------------------------------
 
-
+    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
     // ------------- Image Read ------------
     cv::Mat image = cv::imread(name);
     if (!image.data) {
@@ -154,6 +151,9 @@ int main() {
     cudaMemcpy(h_newimg, d_newimg, image.rows*image.cols, cudaMemcpyDeviceToHost);
     cudaDeviceReset();
 
+    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+    std::cout << "Time difference (sec) = " << (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) /1000000.0 <<std::endl;
+
     std::cout << "CUDA reports " << cudaGetErrorString(cudaGetLastError()) << std::endl;
 
     // ------------- OpenCV ------------
@@ -185,18 +185,5 @@ int main() {
     if (i == image.cols*image.rows) std::cout << std::endl << "All pixels agree! Test valid." << std::endl << std::endl;
     // --------------------------------
 
-
-    // ------------- Output ------------
-    printReport("CUDARGB2Y", RGB2Y_ns);
-    printReport("OpenCV", CV_ns, RGB2Y_ns);
-    std::cout << std::endl;
-    if (display_image) {
-        cv::namedWindow("CUDARGB2Y", CV_WINDOW_NORMAL | CV_WINDOW_KEEPRATIO);
-        cv::imshow("CUDARGB2Y", cv::Mat(image.rows, image.cols, CV_8U, h_newimg));
-        cv::namedWindow("OpenCV", CV_WINDOW_NORMAL | CV_WINDOW_KEEPRATIO);
-        cv::imshow("OpenCV", newimage_cv);
-        cv::waitKey(0);
-    }
-    // --------------------------------
 }
 
