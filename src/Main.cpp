@@ -91,7 +91,7 @@ int main() {
     constexpr char name[] = "test.jpg";
     // --------------------------------
 
-    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+    std::chrono::steady_clock::time_point begin_time = std::chrono::steady_clock::now();
     // ------------- Image Read ------------
     cv::Mat image = cv::imread(name);
     if (!image.data) {
@@ -151,8 +151,8 @@ int main() {
     cudaMemcpy(h_newimg, d_newimg, image.rows*image.cols, cudaMemcpyDeviceToHost);
     cudaDeviceReset();
 
-    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-    std::cout << "Time difference (sec) = " << (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) /1000000.0 <<std::endl;
+    std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
+    std::cout << "Time difference (sec) = " << (std::chrono::duration_cast<std::chrono::microseconds>(end_time - begin_time).count()) /1000000.0 <<std::endl;
 
     std::cout << "CUDA reports " << cudaGetErrorString(cudaGetLastError()) << std::endl;
 
