@@ -91,7 +91,6 @@ int main() {
     constexpr char name[] = "test.jpg";
     // --------------------------------
 
-    std::chrono::steady_clock::time_point begin_time = std::chrono::steady_clock::now();
     // ------------- Image Read ------------
     cv::Mat image = cv::imread(name);
     if (!image.data) {
@@ -151,9 +150,6 @@ int main() {
     cudaMemcpy(h_newimg, d_newimg, image.rows*image.cols, cudaMemcpyDeviceToHost);
     cudaDeviceReset();
 
-    std::chrono::steady_clock::time_point end_time = std::chrono::steady_clock::now();
-    std::cout << "Time difference (sec) = " << (std::chrono::duration_cast<std::chrono::microseconds>(end_time - begin_time).count()) /1000000.0 <<std::endl;
-
     std::cout << "CUDA reports " << cudaGetErrorString(cudaGetLastError()) << std::endl;
 
     // ------------- OpenCV ------------
@@ -185,6 +181,10 @@ int main() {
     }
     if (i == image.cols*image.rows) std::cout << std::endl << "All pixels agree! Test valid." << std::endl << std::endl;
     // --------------------------------
+    // ------------- Output ------------
+    printReport("CUDARGB2Y", RGB2Y_ns);
+    printReport("OpenCV", CV_ns, RGB2Y_ns);
+    std::cout << std::endl;
 
 }
 
