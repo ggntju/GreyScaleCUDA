@@ -160,12 +160,13 @@ int main() {
     nanoseconds CV_ns;
     cv::Mat newimage_cv;
     std::cout << "------------ OpenCV ------------" << std::endl << "Warming up..." << std::endl;
-    for (int i = 0; i < warmups; ++i) cv::cvtColor(image, newimage_cv, CV_BGR2GRAY);
+    for (int i = 0; i < warmups; ++i)
+        cv::cvtColor(image, newimage_cv, cv::COLOR_BGR2GRAY);
     std::cout << "Testing..." << std::endl;
     {
         start = high_resolution_clock::now();
         for (int32_t i = 0; i < runs; ++i) {
-            cv::cvtColor(image, newimage_cv, CV_BGR2GRAY);
+            cv::cvtColor(image, newimage_cv, cv::COLOR_BGR2GRAY);
         }
         end = high_resolution_clock::now();
         CV_ns = (end - start) / runs;
