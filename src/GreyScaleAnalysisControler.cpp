@@ -1,6 +1,4 @@
 #include <opencv2/opencv.hpp>
-#include <opencv2/core/types.hpp>
-#include <opencv2/core/mat.hpp>
 #include "GreyScaleCalculator.h"
 #include "GreyScaleAnalysisControler.h"
 #include <dirent.h>
@@ -23,12 +21,38 @@ void GreyScaleAnalysisControler::print2Console() {
 	cout<< "print2Console method called" << endl;
 	cout<< "print origins" <<endl;
 	cout<< "x: " << this->origins.at<double>(0, 0) <<" y: " << this->origins.at<double>(0, 1) << endl;
-	//cout<< "x: " << this->origins.at<double>(1, 0) <<" y: " << this->origins.at<double>(1, 1) << endl;
+	cout<< "x: " << this->origins.at<double>(1, 0) <<" y: " << this->origins.at<double>(1, 1) << endl;
 	//cout<< "x: " << this->origins.at<double>(2, 0) <<" y: " << this->origins.at<double>(2, 1) << endl;
 	cout<< "print dimensions" <<endl;
 	cout<< "x: " << this->dimensions.at<double>(0, 0) <<" y: " << this->dimensions.at<double>(0, 1) << endl;
-	//cout<< "x: " << this->dimensions.at<double>(1, 0) <<" y: " << this->dimensions.at<double>(1, 1) << endl;
+	cout<< "x: " << this->dimensions.at<double>(1, 0) <<" y: " << this->dimensions.at<double>(1, 1) << endl;
 	//cout<< "x: " << this->dimensions.at<double>(2, 0) <<" y: " << this->dimensions.at<double>(2, 1) << endl;
+}
+
+Mat GreyScaleAnalysisControler::get_histogram() {
+	int n_origins = this->origins.rows;
+	int n_files = this->get_filenumber(this->path, this->file_format);
+	cout << to_string(n_files) + " files found!" << endl;
+	cout << to_string(n_origins) + " ROIs found!" << endl;
+	double histogram_data[n_files][n_origins];
+	for(int i = 0; i < n_files; i++) {
+		//std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		for (int j = 0; j < n_origins; j++) {
+			string filename = this->get_filename(i, this->file_format);
+			//cout << "Processing " + filename + " ROI " + to_string(j) << endl;
+			double origin[2] = {this->origins.at<double>(Point(j,0)), this->origins.at<double>(Point(j,1))};
+			double dimension[2] = {this->dimensions.at<double>(Point(j,0)), this->dimensions.at<double>(Point(j,1))};
+			GreyScaleCalculator calculator("../ImageData/" + filename, origin, dimension);
+			Mat image_proc = calculator.open_image();
+			double calc_result = calculator.calc_greyscale(image_proc);
+			histogram_data[i][j] = calc_result;
+		}
+		//std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		//std::cout << "Time difference (sec) = " << (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) /1000000.0 <<std::endl;
+	}
+	Mat result(n_files, n_origins, CV_64F);
+	std::memcpy(result.data, histogram_data, n_files*n_origins*sizeof(double));
+	return result;
 }
 
 string GreyScaleAnalysisControler::get_filename(int index_in, string file_format_in) {
@@ -97,25 +121,4 @@ void GreyScaleAnalysisControler::write2CSV(Mat data_in) {
 	}
 	myfile.close();
 }
-
-Mat GreyScaleAnalysisControler::open_image(string filename) {
-	Mat image;
-	image = imread(filename);
-	return image;
-}
-
-Mat GreyScaleAnalysisControler::get_histogram_data() {
-	int n_origins = this->origins.rows;
-	int n_files = this->get_filenumber(this->path, this->file_format);
-	cout << "n_origins: " << n_origins << endl;
-	cout << "n_files: " << n_files << endl;
-	Mat total_hist_data(1, n_files + 1, CV_8UC3);
-	for(int i = 0; i < n_origins; i++) {
-		double origin[2] = {this->origins.at<double>(i, 0), this->origins.at<double>(i, 1)};
-		double dimension[2] = {this->dimensions.at<double>(i, 0), this->dimensions.at<double>(i, 1)};
-	}
-	return total_hist_data;
-}
-
-
 

@@ -5,12 +5,15 @@ using namespace std;
 using namespace cv;
 class GreyScaleCalculator {
 private:
+	string filename;
 	double origin[2];
 	double dimension[2];
 public:
-	GreyScaleCalculator(double* origin_in, double* dimension_in);
+	GreyScaleCalculator(string filename_in, double* origin_in, double* dimension_in);
 	~GreyScaleCalculator();
 	void printInfo();
-	Mat calc_greyscale(Mat image_in);
+	Mat open_image();
+	Scalar get_pixel(Mat image_in, int i, int j);
+	double calc_greyscale(Mat image_in);
 };
 #endif

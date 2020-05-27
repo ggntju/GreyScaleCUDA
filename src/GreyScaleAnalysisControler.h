@@ -18,9 +18,8 @@ public:
 	~GreyScaleAnalysisControler();
 	void print2Console();
 	void write2CSV(Mat data_in);
+	Mat get_histogram();
 	string get_filename(int index_in, string file_format_in);
 	int get_filenumber(char* path_in, char* file_format_in);
-	Mat get_histogram_data();
-	Mat open_image(string filename);
 };
 #endif /* SRC_GREYSCALEANALYSISCONTROLER_H_ */
