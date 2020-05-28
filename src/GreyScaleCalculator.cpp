@@ -103,7 +103,8 @@ double GreyScaleCalculator::CUDA_greyscale() {
     cudaTextureObject_t tex_img = 0;
     cudaCreateTextureObject(&tex_img, &resDesc, &texDesc, nullptr);
     // Setup initial value
-    int* pixel_sum = new int[1];
+    int* pixel_sum;
+    cudaMalloc(&pixel_sum, 1);
     pixel_sum[0] = 0;
     cout << "pixel sum: " << pixel_sum[0] << endl;
     // Call CUDA function
