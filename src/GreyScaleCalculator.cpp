@@ -7,6 +7,7 @@ using namespace cv;
 using namespace std;
 
 GreyScaleCalculator::GreyScaleCalculator(string filename_in, double* origin_in, double* dimension_in) {
+    cout << "Calculator was contructed!" << endl;
 	filename = filename_in;
 	for(int i = 0; i < 2; i++) {
 		origin[i] = origin_in[i];
