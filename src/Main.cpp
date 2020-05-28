@@ -13,11 +13,11 @@ int main( int argc, char** argv )
     Mat dimensions = (Mat_<double>(2,2) << 290.0, 75.0, 90.0, 50.0);
 	GreyScaleAnalysisControler controler(origins, dimensions, "../ImageData", "bmp");
 	controler.print2Console();
-	Mat histData = controler.get_histogram_data();
+	Mat histData = controler.get_histogram();
 	cout << histData.cols << endl;
 	cout << histData.rows << endl;
 	//cout << histData << endl;
 	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 	std::cout << "Time difference (sec) = " << (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) /1000000.0 <<std::endl;
-
+    controler.write2CSV(histData);
 }
