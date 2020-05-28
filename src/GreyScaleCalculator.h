@@ -15,5 +15,6 @@ public:
 	Mat open_image();
 	Scalar get_pixel(Mat image_in, int i, int j);
 	double calc_greyscale(Mat image_in);
+	double CUDA_greyscale();
 };
 #endif

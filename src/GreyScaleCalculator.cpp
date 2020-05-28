@@ -1,5 +1,7 @@
 #include <opencv2/opencv.hpp>
 #include "GreyScaleCalculator.h"
+#include "cuda_runtime.h"
+#include "device_launch_parameters.h"
 using namespace cv;
 using namespace std;
 
@@ -66,5 +68,38 @@ double GreyScaleCalculator::calc_greyscale(Mat image_in) {
 	//cout<<"grey_sum: " << grey_sum << endl;
 	//cout<<"pixel_count: " << pixel_count << endl;
 	return grey_sum/pixel_count;
+}
+
+double GreyScaleCalculator::CUDA_greyscale() {
+    Mat total_domain = this->open_image();
+    Rect ROI(this->origin[0], this->origin[1], this->dimension[0], this->dimension[1]);
+    Mat roi_domain(total_domain, ROI);
+
+    // setting cache and shared modes
+    cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
+    cudaDeviceSetSharedMemConfig(cudaSharedMemBankSizeEightByte);
+
+    // allocating and transferring image as texture object
+    uint8_t* d_img;
+    cudaMalloc(&d_img, 3*roi_domain.rows*roi_domain.cols);
+    cudaMemcpy(d_img, roi_domain.data, 3*roi_domain.rows*roi_domain.cols, cudaMemcpyHostToDevice);
+    struct cudaResourceDesc resDesc;
+    memset(&resDesc, 0, sizeof(resDesc));
+    resDesc.resType = cudaResourceTypeLinear;
+    resDesc.res.linear.devPtr = d_img;
+    resDesc.res.linear.desc.f = cudaChannelFormatKindUnsigned;
+    resDesc.res.linear.desc.x = 8;
+    resDesc.res.linear.sizeInBytes = 3 * roi_domain.rows * roi_domain.cols;
+
+    struct cudaTextureDesc texDesc;
+    memset(&texDesc, 0, sizeof(texDesc));
+    texDesc.addressMode[0] = texDesc.addressMode[1] = texDesc.addressMode[2] = texDesc.addressMode[3] = cudaAddressModeBorder;
+    texDesc.filterMode = cudaFilterModePoint;
+    texDesc.readMode = cudaReadModeElementType;
+    texDesc.normalizedCoords = 0;
+    cudaTextureObject_t tex_img = 0;
+    cudaCreateTextureObject(&tex_img, &resDesc, &texDesc, nullptr);
+
+
 }
 
