@@ -43,8 +43,7 @@ Mat GreyScaleAnalysisControler::get_histogram() {
 			double origin[2] = {this->origins.at<double>(Point(j,0)), this->origins.at<double>(Point(j,1))};
 			double dimension[2] = {this->dimensions.at<double>(Point(j,0)), this->dimensions.at<double>(Point(j,1))};
 			GreyScaleCalculator calculator("../ImageData/" + filename, origin, dimension);
-			Mat image_proc = calculator.open_image();
-			double calc_result = calculator.calc_greyscale(image_proc);
+			double calc_result = calculator.CUDA_greyscale();
 			histogram_data[i][j] = calc_result;
 		}
 		//std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();

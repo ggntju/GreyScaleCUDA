@@ -2,6 +2,7 @@
 #include "GreyScaleCalculator.h"
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
+#include "CUDACalculator.h"
 using namespace cv;
 using namespace std;
 
@@ -99,7 +100,11 @@ double GreyScaleCalculator::CUDA_greyscale() {
     texDesc.normalizedCoords = 0;
     cudaTextureObject_t tex_img = 0;
     cudaCreateTextureObject(&tex_img, &resDesc, &texDesc, nullptr);
-
-
+    // Setup initial value
+    uint8_t* pixel_sum;
+    pixel_sum[0] = 0;
+    // Call CUDA function
+    cuda_calculate_greyscale(tex_img, roi_domain.rows * roi_domain.cols, pixel_sum);
+    return (double) pixel_sum[0]/ (double) (3 * roi_domain.rows * roi_domain.cols);
 }
 
