@@ -109,9 +109,13 @@ double GreyScaleCalculator::CUDA_greyscale() {
     cout << "pixel sum: " << pixel_sum[0] << endl;
     // Call CUDA function
     cuda_calculate_greyscale(tex_img, roi_domain.rows * roi_domain.cols, pixel_sum);
-    int pixel_sum_int = pixel_sum[0];
-    delete pixel_sum;
-    return (double) pixel_sum_int/ (double) (3 * roi_domain.rows * roi_domain.cols);
+    int* pixel_sum_int = reinterpret_cast<int*>(malloc(1));
+    // Transfer data back to host
+    cudaMemcpy(pixel_sum_int, pixel_sum, 1, cudaMemcpyDeviceToHost);
+    cudaDeviceReset();
+    int pixel_sum_temp = pixel_sum_int[0];
+    free(pixel_sum_int);
+    return (double) pixel_sum_temp/ (double) (3 * roi_domain.rows * roi_domain.cols);
 
 }
 
