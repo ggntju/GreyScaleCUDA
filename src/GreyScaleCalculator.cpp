@@ -72,6 +72,10 @@ double GreyScaleCalculator::calc_greyscale(Mat image_in) {
 }
 
 double GreyScaleCalculator::CUDA_greyscale() {
+    double width = this->dimension[0];
+    double height = this->dimension[1];
+    //cout << "width: " << width << endl;
+    //cout << "height: " << height << endl;
     Mat total_domain = this->open_image();
     Rect ROI(this->origin[0], this->origin[1], this->dimension[0], this->dimension[1]);
     Mat roi_domain(total_domain, ROI);
