@@ -1,7 +1,7 @@
 EXECUTABLE_NAME=RGB2GREY
 CPP=g++
 NVCC=nvcc
-ARCH=sm_30
+ARCH=sm_53
 INC=-I/usr/local/cuda/include/ -I/usr/local/include/opencv4
 NVCCFLAGS=-Wall -Wextra -Wshadow -Ofast -fomit-frame-pointer -march=native -funroll-all-loops -fpeel-loops -ftracer -ftree-vectorize
 CPPFLAGS=-Wall -Wextra -Wshadow -pedantic -Ofast -std=gnu++11 -fomit-frame-pointer -march=native -flto -funroll-all-loops -fpeel-loops -ftracer -ftree-vectorize
