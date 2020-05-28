@@ -7,7 +7,7 @@ using namespace cv;
 using namespace std;
 
 GreyScaleCalculator::GreyScaleCalculator(string filename_in, double* origin_in, double* dimension_in) {
-    cout << "Calculator was contructed!" << endl;
+    cout << "Calculator was constructed!" << endl;
 	filename = filename_in;
 	for(int i = 0; i < 2; i++) {
 		origin[i] = origin_in[i];
@@ -75,11 +75,12 @@ double GreyScaleCalculator::calc_greyscale(Mat image_in) {
 double GreyScaleCalculator::CUDA_greyscale() {
     double width = this->dimension[0];
     double height = this->dimension[1];
-    //cout << "width: " << width << endl;
-    //cout << "height: " << height << endl;
+    cout << "width: " << width << endl;
+    cout << "height: " << height << endl;
     Mat total_domain = this->open_image();
     Rect ROI(this->origin[0], this->origin[1], this->dimension[0], this->dimension[1]);
     Mat roi_domain(total_domain, ROI);
+    cout << "ROI was selected" << endl;
 
     // setting cache and shared modes
     cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
