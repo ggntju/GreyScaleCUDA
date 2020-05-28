@@ -107,11 +107,14 @@ double GreyScaleCalculator::CUDA_greyscale() {
     cudaTextureObject_t tex_img = 0;
     cudaCreateTextureObject(&tex_img, &resDesc, &texDesc, nullptr);
     // Setup initial value
-    uint8_t* pixel_sum;
+    uint8_t* pixel_sum = new uint8_t[1];
     pixel_sum[0] = 0;
     cout << "pixel sum: " << pixel_sum[0] << endl;
     // Call CUDA function
     cuda_calculate_greyscale(tex_img, roi_domain.rows * roi_domain.cols, pixel_sum);
-    return (double) pixel_sum[0]/ (double) (3 * roi_domain.rows * roi_domain.cols);
+    int pixel_sum_int = pixel_sum[0];
+    delete pixel_sum;
+    return (double) pixel_sum_int/ (double) (3 * roi_domain.rows * roi_domain.cols);
+
 }
 
