@@ -103,6 +103,7 @@ double GreyScaleCalculator::CUDA_greyscale() {
     // Setup initial value
     uint8_t* pixel_sum;
     pixel_sum[0] = 0;
+    cout << "pixel sum: " << pixel_sum[0] << endl;
     // Call CUDA function
     cuda_calculate_greyscale(tex_img, roi_domain.rows * roi_domain.cols, pixel_sum);
     return (double) pixel_sum[0]/ (double) (3 * roi_domain.rows * roi_domain.cols);
