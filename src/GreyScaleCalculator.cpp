@@ -90,6 +90,7 @@ double GreyScaleCalculator::CUDA_greyscale() {
     //cout << roi_sum << endl;
     //cout << arraySize << endl;
     cout << "-------------------" << endl;
-    return (double)roi_sum/(double)arraySize;
+    return 0.0;
+    //return (double)roi_sum/(double)arraySize;
 }
 
