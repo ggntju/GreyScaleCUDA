@@ -24,7 +24,6 @@ void GPUWarmer::warmUp() {
     cv::Mat image = cv::imread(name);
     if (!image.data) {
         std::cerr << "ERROR: failed to open image. Aborting." << std::endl;
-        return EXIT_FAILURE;
     }
     // --------------------------------
 
