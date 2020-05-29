@@ -15,6 +15,9 @@ __global__ void sumCommMultiBlock(const long int *gArr, int arraySize, long int 
     const int gridSize = blockSize*gridDim.x;
     long int sum = 0;
     for (int i = gthIdx; i < arraySize; i += gridSize)
+        if(gArr[i] < 0) {
+            std::cout << gArr[i] << std::endl;
+        }
         sum += gArr[i];
     __shared__ long int shArr[blockSize];
     shArr[thIdx] = sum;
@@ -43,8 +46,6 @@ long int sumArray(long int* roi_pointer, int arraySize) {
     long int roi_sum;
     long int* img_out;
     cudaMalloc((void**)&img_out, sizeof(long int)*gridSize);
-    std::cout << "blockSize: " << blockSize << std::endl;
-    std::cout << "gridSize: " << gridSize << std::endl;
     // call the sum function
     sumCommMultiBlock<<<gridSize, blockSize>>>(img_in, arraySize, img_out);
     sumCommMultiBlock<<<1, blockSize>>>(img_out, gridSize, img_out);
