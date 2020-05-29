@@ -104,11 +104,11 @@ double GreyScaleCalculator::CUDA_greyscale() {
 //    cout << this->dimension[0] << "\t" << this->dimension[1] << endl;
 //    cout << roi_sum << endl;
 //    cout << arraySize << endl;
-    cout << "results from CPU" << endl;
-    cout << this->calc_greyscale(total_domain) << endl;
-    cout << "results from GPU" << endl;
-    cout << roi_sum/(double)arraySize << endl;
-    cout << "-------------------" << endl;
+//    cout << "results from CPU" << endl;
+//    cout << this->calc_greyscale(total_domain) << endl;
+//    cout << "results from GPU" << endl;
+//    cout << roi_sum/(double)arraySize << endl;
+//    cout << "-------------------" << endl;
     delete roi_pointer;
     return roi_sum/(double)arraySize;
 }
