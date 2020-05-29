@@ -14,7 +14,7 @@ GPUWarmer::GPUWarmer() {
 
 void GPUWarmer::warmUp() {
     // ------------- Configuration ------------
-    constexpr auto warmups = 100;
+    constexpr auto warmups = 200;
     constexpr bool weighted_averaging = true;
     constexpr char name[] = "test.jpg";
     // --------------------------------
