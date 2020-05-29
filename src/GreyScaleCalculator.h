@@ -17,5 +17,6 @@ public:
 	double calc_greyscale(Mat image_in);
 	double CUDA_greyscale();
     void data_convert(Mat data, const int32_t cols, const int32_t rows, const int32_t stride, double* const __restrict out);
+    void roi_domain_test();
 };
 #endif

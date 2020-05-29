@@ -56,26 +56,26 @@ double GreyScaleCalculator::calc_greyscale(Mat image_in) {
 	double grey_sum = 0.0;
 	double pixel_count = 0.0;
 
-	for (int i = 0; i < height; i++) {
-		for (int j = 0; j < width; j++) {
-			Scalar pixel = this->get_pixel(image_in, this->origin[1] + i, this->origin[0] + j);
-			double red = pixel.val[0];
-			double green = pixel.val[1];
-			double blue = pixel.val[2];
-			//cout<< "red: " << red << endl;
-			double grey = red * 0.299 + green * 0.587 + blue * 0.114;
-			grey_sum = grey_sum + grey;
-			pixel_count = pixel_count + 1.0;
-		}
-	}
+//	for (int i = 0; i < height; i++) {
+//		for (int j = 0; j < width; j++) {
+//			Scalar pixel = this->get_pixel(image_in, this->origin[1] + i, this->origin[0] + j);
+//			double red = pixel.val[0];
+//			double green = pixel.val[1];
+//			double blue = pixel.val[2];
+//			//cout<< "red: " << red << endl;
+//			double grey = red * 0.299 + green * 0.587 + blue * 0.114;
+//			grey_sum = grey_sum + grey;
+//			pixel_count = pixel_count + 1.0;
+//		}
+//	}
 
-//    Rect ROI(this->origin[0], this->origin[1], this->dimension[0], this->dimension[1]);
-//    Mat roi_domain(image_in, ROI);
-//    for(int i = 0; i < width; i++) {
-//        for (int j = 0; j < height; j++) {
-//            grey_sum = grey_sum + roi_domain.at<Vec3b>(i,j).val[0];
-//        }
-//    }
+    Rect ROI(this->origin[0], this->origin[1], this->dimension[0], this->dimension[1]);
+    Mat roi_domain(image_in, ROI);
+    for(int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
+            grey_sum = grey_sum + roi_domain.at<Vec3b>(i,j).val[0];
+        }
+    }
 	//cout<<"grey_sum: " << grey_sum << endl;
 	//cout<<"pixel_count: " << pixel_count << endl;
 	return grey_sum/double(width * height);
@@ -85,12 +85,12 @@ double GreyScaleCalculator::CUDA_greyscale() {
     Mat total_domain = this->open_image();
     Rect ROI(this->origin[0], this->origin[1], this->dimension[0], this->dimension[1]);
     Mat roi_domain(total_domain, ROI);
-    cout << "info" << endl;
-    cout << ROI.x << endl;
-    cout << ROI.y << endl;
-    cout << ROI.width << endl;
-    cout << ROI.height << endl;
-    cout << "---------------------" << endl;
+//    cout << "info" << endl;
+//    cout << ROI.x << endl;
+//    cout << ROI.y << endl;
+//    cout << ROI.width << endl;
+//    cout << ROI.height << endl;
+//    cout << "---------------------" << endl;
     int arraySize = roi_domain.rows * roi_domain.cols;
     double* roi_pointer = new double[roi_domain.cols*roi_domain.rows];
     data_convert(roi_domain, roi_domain.cols, roi_domain.rows, roi_domain.cols, roi_pointer);
@@ -99,11 +99,11 @@ double GreyScaleCalculator::CUDA_greyscale() {
 //    }
     // call cuda function
     double roi_sum = sumArray(roi_pointer, arraySize);
-    cout << "info" << endl;
-    cout << this->origin[0] << "\t" << this->origin[1] << endl;
-    cout << this->dimension[0] << "\t" << this->dimension[1] << endl;
-    cout << roi_sum << endl;
-    cout << arraySize << endl;
+//    cout << "info" << endl;
+//    cout << this->origin[0] << "\t" << this->origin[1] << endl;
+//    cout << this->dimension[0] << "\t" << this->dimension[1] << endl;
+//    cout << roi_sum << endl;
+//    cout << arraySize << endl;
     cout << "results from CPU" << endl;
     cout << this->calc_greyscale(total_domain) << endl;
     cout << "results from GPU" << endl;
@@ -124,5 +124,26 @@ void GreyScaleCalculator::data_convert(Mat data, const int32_t cols, const int32
             out[i*stride + j] = data.at<Vec3b>(Point(i,j)).val[0];
         }
     }
+}
+
+void GreyScaleCalculator::roi_domain_test() {
+
+    cout << "roi_domain_test being called" << endl;
+    Mat image;
+    image = imread("../ImageData/00000.bmp");   // Read the file
+    cout << "domain info" << endl;
+    cout << "origin: " << origin[0] << "\t" << origin[1] << endl;
+    cout << "dimension: " << dimension[0] << "\t" << dimension[1] << endl;
+    Rect ROI(this->origin[0], this->origin[1], this->dimension[0], this->dimension[1]);
+    cout << "roi info" << endl;
+    cout << ROI.x << "\t" << ROI.y << "\t" << ROI.width << "\t" << ROI.height << endl;
+    Mat roi_domain(image, ROI);
+    cout << "roi domain info" << endl;
+    cout << roi_domain.rows << "\t" << roi_domain.cols << endl;
+
+    namedWindow( "Display window", WINDOW_AUTOSIZE );// Create a window for display.
+    imshow( "Display window", roi_domain );                   // Show our image inside it.
+
+    waitKey(0);
 }
 
