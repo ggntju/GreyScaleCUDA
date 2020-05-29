@@ -56,8 +56,8 @@ double GreyScaleCalculator::calc_greyscale(Mat image_in) {
 	double grey_sum = 0.0;
 	double pixel_count = 0.0;
 
-	for (int i = 0; i < width; i++) {
-		for (int j = 0; j < height; j++) {
+	for (int i = 0; i < height; i++) {
+		for (int j = 0; j < width; j++) {
 			Scalar pixel = this->get_pixel(image_in, this->origin[0] + i, this->origin[1] + j);
 			double red = pixel.val[0];
 			double green = pixel.val[1];
