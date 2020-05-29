@@ -73,35 +73,12 @@ double GreyScaleCalculator::calc_greyscale(Mat image_in) {
 }
 
 double GreyScaleCalculator::CUDA_greyscale() {
-    // define hardware dependent variables
-    static const int blockSize = 1024;
-    static const int gridSize = 12; //this number is hardware-dependent; usually #SM*2 is a good number.
-
     Mat total_domain = this->open_image();
     Rect ROI(this->origin[0], this->origin[1], this->dimension[0], this->dimension[1]);
     Mat roi_domain(total_domain, ROI);
-    int arraySize = 3 * roi_domain.rows * roi_domain.cols;
-    //cout << "ROI was selected" << endl;
-
-    // setting cache and shared modes
-    cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
-    cudaDeviceSetSharedMemConfig(cudaSharedMemBankSizeEightByte);
-    // transfer data from host to device
-    int* img_in;
-    cudaMalloc(&img_in, arraySize);
-    cudaMemcpy(img_in, roi_domain.data, arraySize, cudaMemcpyHostToDevice);
-
-    int roi_sum;
-    int* img_out;
-    cudaMalloc((void**)&img_out, sizeof(int)*gridSize);
-    // call the sum function
-    sumCommMultiBlock<<<gridSize, blockSize>>>(img_in, arraySize, img_out);
-    sumCommMultiBlock<<<1, blockSize>>>(img_out, gridSize, img_out);
-    cudaDeviceSynchronize();
-    // transfer data from device to host
-    cudaMemcpy(&roi_sum, img_out, sizeof(int), cudaMemcpyDeviceToHost);
-    cudaFree(img_in);
-    cudaFree(img_out);
+    int arraySize = roi_domain.rows * roi_domain.cols * 3;
+    // call cuda function
+    int roi_sum = sumArray(roi_domain);
     return (double)roi_sum/(double)arraySize;
 }
 
