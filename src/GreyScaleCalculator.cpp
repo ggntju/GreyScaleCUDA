@@ -42,7 +42,7 @@ Scalar GreyScaleCalculator::get_pixel(Mat image_in, int i, int j) {
 		cin.get();
 		return NULL;
 	}
-	pixel = image_in.at<Vec3b>(Point(i,j));
+	pixel = image_in.at<Vec3b>(i,j);
 	// cout<< "pixel at " << "\t" << i << "\t" << j <<endl;
 	// cout<< pixel[0] << "\t" << pixel[1] << "\t" << pixel[2] << "\n" <<endl;
 	return pixel;
