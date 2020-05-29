@@ -90,6 +90,11 @@ double GreyScaleCalculator::CUDA_greyscale() {
 void GreyScaleCalculator::data_convert(Mat data, const int32_t cols, const int32_t rows, const int32_t stride, double* const __restrict out) {
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
+            cout << "info" << endl;
+            cout << data.at<Vec3b>(i, j).val[0] << endl;
+            cout << data.at<Vec3b>(i, j).val[1] << endl;
+            cout << data.at<Vec3b>(i, j).val[1] << endl;
+            cout << "----------------" << endl;
             out[i*stride + j] = data.at<Vec3b>(i,j).val[0];
         }
     }
