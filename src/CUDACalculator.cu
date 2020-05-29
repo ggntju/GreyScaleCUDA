@@ -3,7 +3,9 @@
 //
 
 #include "CUDACalculator.h"
+#include <opencv2/opencv.hpp>
 
+using namespace cv;
 // define hardware dependent variables
 static const int blockSize = 1024;
 static const int gridSize = 12; //this number is hardware-dependent; usually #SM*2 is a good number.
@@ -27,14 +29,17 @@ __global__ void sumCommMultiBlock(const int *gArr, int arraySize, int *gOut) {
         gOut[blockIdx.x] = shArr[0];
 }
 
-int sumArray(int* roi_in, int arraySize) {
+int sumArray(cv::Mat roi_domain, int arraySize) {
+//    int* roi_in;
+//    cudaMalloc(&roi_in, arraySize);
+//    cudaMemcpy(roi_in, roi_domain.data, arraySize, cudaMemcpyHostToDevice);
     // setting cache and shared modes
     cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
     cudaDeviceSetSharedMemConfig(cudaSharedMemBankSizeEightByte);
     // transfer data from host to device
     int* img_in;
     cudaMalloc(&img_in, arraySize * sizeof(int));
-    cudaMemcpy(img_in, roi_in, arraySize * sizeof(int), cudaMemcpyHostToDevice);
+    cudaMemcpy(img_in, roi_domain.data, arraySize * sizeof(int), cudaMemcpyHostToDevice);
 
     int roi_sum;
     int* img_out;
