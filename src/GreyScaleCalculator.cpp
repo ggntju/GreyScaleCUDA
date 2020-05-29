@@ -33,15 +33,15 @@ Mat GreyScaleCalculator::open_image() {
 
 Scalar GreyScaleCalculator::get_pixel(Mat image_in, int i, int j) {
 	Scalar pixel;
-	int x1 = this->origin[0];
-	int y1 = this->origin[1];
-	int x2 = x1 + this->dimension[0];
-	int y2 = y1 + this->dimension[1];
-	if(i < x1 || i > x2 || j < y1 || j > y2) {
-		cout << "Out of boundary!" << endl;
-		cin.get();
-		return NULL;
-	}
+//	int x1 = this->origin[0];
+//	int y1 = this->origin[1];
+//	int x2 = x1 + this->dimension[0];
+//	int y2 = y1 + this->dimension[1];
+//	if(i < x1 || i > x2 || j < y1 || j > y2) {
+//		cout << "Out of boundary!" << endl;
+//		cin.get();
+//		return NULL;
+//	}
 	pixel = image_in.at<Vec3b>(i,j);
 	// cout<< "pixel at " << "\t" << i << "\t" << j <<endl;
 	// cout<< pixel[0] << "\t" << pixel[1] << "\t" << pixel[2] << "\n" <<endl;
