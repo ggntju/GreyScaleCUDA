@@ -9,8 +9,11 @@ using namespace std;
 int main( int argc, char** argv )
 {
     // warm up the GPU
+    std::chrono::steady_clock::time_point warmup_begin = std::chrono::steady_clock::now();
     GPUWarmer gpuWarmer;
     gpuWarmer.warmUp();
+    std::chrono::steady_clock::time_point warmup_end = std::chrono::steady_clock::now();
+    std::cout << "Warm up GPU takes time (sec) = " << (std::chrono::duration_cast<std::chrono::microseconds>(warmup_end - warmup_begin).count()) /1000000.0 <<std::endl;
     // start to count
 	std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
     Mat origins = (Mat_<double>(2,2) << 20.0, 75.0, 190.0, 340.0);
@@ -24,6 +27,6 @@ int main( int argc, char** argv )
 //	cout << histData.rows << endl;
 	//cout << histData << endl;
 	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-	std::cout << "Time difference (sec) = " << (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) /1000000.0 <<std::endl;
+	std::cout << "Actual calculation takes time (sec) = " << (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) /1000000.0 <<std::endl;
     controler.write2CSV(histData);
 }
