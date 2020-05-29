@@ -77,7 +77,7 @@ double GreyScaleCalculator::CUDA_greyscale() {
     Rect ROI(this->origin[0], this->origin[1], this->dimension[0], this->dimension[1]);
     Mat roi_domain(total_domain, ROI);
     int arraySize = roi_domain.rows * roi_domain.cols * 3;
-    uint8_t* refresult = new uint8_t[image.cols*image.rows];
+    uint8_t* refresult = new uint8_t[roi_domain.cols*roi_domain.rows];
     RGB2Y_ref(roi_domain.data, roi_domain.cols, roi_domain.rows, roi_domain.cols, refresult);
     for(int i = 0; i < roi_domain.cols * roi_domain.rows; i++) {
         cout << refresult[i] << endl;
