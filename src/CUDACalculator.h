@@ -19,5 +19,5 @@
 #include "device_functions.h"
 #undef __CUDACC__
 #endif
-int sumArray(Mat roi_in);
+int sumArray(int* roi_in, int arraySize);
 #endif //GREYSCALECUDA_CUDACALCULATOR_H
