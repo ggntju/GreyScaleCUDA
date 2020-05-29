@@ -83,6 +83,10 @@ double GreyScaleCalculator::CUDA_greyscale() {
     // call cuda function
     long int roi_sum = sumArray(roi_domain, arraySize);
     //cudaFree(roi_pointer);
+    cout << "info" << endl;
+    cout << roi_sum << endl;
+    cout << arraySize << endl;
+    cout << "-------------------" << endl;
     return (double)roi_sum/(double)arraySize;
 }
 
