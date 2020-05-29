@@ -42,6 +42,8 @@ long int sumArray(long int* roi_pointer, int arraySize) {
     long int roi_sum;
     long int* img_out;
     cudaMalloc((void**)&img_out, sizeof(long int)*gridSize);
+    cout << "blockSize: " << blockSize << endl;
+    cout << "gridSize: " << gridSize << endl;
     // call the sum function
     sumCommMultiBlock<<<gridSize, blockSize>>>(img_in, arraySize, img_out);
     sumCommMultiBlock<<<1, blockSize>>>(img_out, gridSize, img_out);
