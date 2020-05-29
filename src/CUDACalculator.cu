@@ -3,6 +3,7 @@
 //
 
 #include "CUDACalculator.h"
+#include <opencv2/opencv.hpp>
 
 // define hardware dependent variables
 static const int blockSize = 1024;
