@@ -80,7 +80,7 @@ double GreyScaleCalculator::CUDA_greyscale() {
     long int* roi_pointer = (long int*)roi_domain.data;
     for(int i = 0; i < arraySize; i++) {
         cout << roi_pointer[i] << endl;
-        cin.getline();
+        cin.get();
     }
 //    cudaMalloc(&roi_pointer, arraySize);
 //    cudaMemcpy(roi_pointer, roi_domain.data, arraySize, cudaMemcpyHostToDevice);
