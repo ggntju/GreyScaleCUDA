@@ -55,7 +55,7 @@ double GreyScaleCalculator::calc_greyscale(Mat image_in) {
 	//cout << "height: " << height << endl;
 	double grey_sum = 0.0;
 	double pixel_count = 0.0;
-	/*
+
 	for (int i = 0; i < width; i++) {
 		for (int j = 0; j < height; j++) {
 			Scalar pixel = this->get_pixel(image_in, this->origin[0] + i, this->origin[1] + j);
@@ -68,14 +68,14 @@ double GreyScaleCalculator::calc_greyscale(Mat image_in) {
 			pixel_count = pixel_count + 1.0;
 		}
 	}
-	 */
-    Rect ROI(this->origin[0], this->origin[1], this->dimension[0], this->dimension[1]);
-    Mat roi_domain(image_in, ROI);
-    for(int i = 0; i < width; i++) {
-        for (int j = 0; j < height; j++) {
-            grey_sum = grey_sum + roi_domain.at<Vec3b>(i,j).val[0];
-        }
-    }
+
+//    Rect ROI(this->origin[0], this->origin[1], this->dimension[0], this->dimension[1]);
+//    Mat roi_domain(image_in, ROI);
+//    for(int i = 0; i < width; i++) {
+//        for (int j = 0; j < height; j++) {
+//            grey_sum = grey_sum + roi_domain.at<Vec3b>(i,j).val[0];
+//        }
+//    }
 	//cout<<"grey_sum: " << grey_sum << endl;
 	//cout<<"pixel_count: " << pixel_count << endl;
 	return grey_sum/double(width * height);
