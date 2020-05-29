@@ -16,6 +16,6 @@ public:
 	Scalar get_pixel(Mat image_in, int i, int j);
 	double calc_greyscale(Mat image_in);
 	double CUDA_greyscale();
-    void RGB2Y_ref(const uint8_t* __restrict const data, const int32_t cols, const int32_t rows, const int32_t stride, uint8_t* const __restrict out);
+    void data_convert(Mat data, const int32_t cols, const int32_t rows, const int32_t stride, uint8_t* const __restrict out);
 };
 #endif
