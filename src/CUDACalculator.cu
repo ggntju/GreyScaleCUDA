@@ -29,7 +29,7 @@ __global__ void sumCommMultiBlock(const long int *gArr, int arraySize, long int 
         gOut[blockIdx.x] = shArr[0];
 }
 
-long int sumArray(cv::Mat roi_domain, int arraySize) {
+long int sumArray(long int* roi_pointer, int arraySize) {
 //    int* roi_in;
 //    cudaMalloc(&roi_in, arraySize);
 //    cudaMemcpy(roi_in, roi_domain.data, arraySize, cudaMemcpyHostToDevice);
@@ -39,7 +39,7 @@ long int sumArray(cv::Mat roi_domain, int arraySize) {
     // transfer data from host to device
     long int* img_in;
     cudaMalloc(&img_in, arraySize * sizeof(long int));
-    cudaMemcpy(img_in, roi_domain.data, arraySize * sizeof(long int), cudaMemcpyHostToDevice);
+    cudaMemcpy(img_in, roi_pointer, arraySize * sizeof(long int), cudaMemcpyHostToDevice);
 
     long int roi_sum;
     long int* img_out;

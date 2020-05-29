@@ -19,5 +19,5 @@
 #include "device_functions.h"
 #undef __CUDACC__
 #endif
-long int sumArray(cv::Mat roi_in, int arraySize);
+long int sumArray(long int* roi_pointer, int arraySize);
 #endif //GREYSCALECUDA_CUDACALCULATOR_H
