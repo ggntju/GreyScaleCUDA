@@ -7,8 +7,8 @@
 #pragma once
 
 #include <cstdint>
-
 #include "cuda_runtime.h"
+#include <opencv2/opencv.hpp>
 
 #ifdef __INTELLISENSE__
 #define asm(x)
@@ -19,5 +19,5 @@
 #include "device_functions.h"
 #undef __CUDACC__
 #endif
-int sumArray(Mat roi_in, int arraySize);
+int sumArray(cv::Mat roi_in, int arraySize);
 #endif //GREYSCALECUDA_CUDACALCULATOR_H
