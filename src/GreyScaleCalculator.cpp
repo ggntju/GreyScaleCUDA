@@ -102,7 +102,7 @@ void GreyScaleCalculator::RGB2Y_ref(const uint8_t* __restrict const data, const 
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
             const auto idx = 3 * (i*stride + j);
-            out[i*stride + j] = (static_cast<uint32_t>(data[idx]) + static_cast<uint32_t>(data[idx + 1]) + static_cast<uint32_t>(data[idx + 2])) / 3;
+            out[i*stride + j] = (static_cast<uint8_t>(data[idx]) + static_cast<uint8_t>(data[idx + 1]) + static_cast<uint8_t>(data[idx + 2])) / 3;
             cout << out[i*stride + j] << endl;
         }
     }
