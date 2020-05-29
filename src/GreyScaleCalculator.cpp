@@ -78,12 +78,12 @@ double GreyScaleCalculator::CUDA_greyscale() {
     Mat roi_domain(total_domain, ROI);
     int arraySize = roi_domain.rows * roi_domain.cols * 3;
 
-    uint8_t* refresult = new uint8_t[roi_domain.cols*roi_domain.rows];
+    double* refresult = new uint8_t[roi_domain.cols*roi_domain.rows];
     data_convert(roi_domain, roi_domain.cols, roi_domain.rows, roi_domain.cols, refresult);
-    for(int i = 0; i < roi_domain.cols * roi_domain.rows; i++) {
-        cout << refresult[i] << endl;
-        // cin.get();
-    }
+//    for(int i = 0; i < roi_domain.cols * roi_domain.rows; i++) {
+//        cout << refresult[i] << endl;
+//        // cin.get();
+//    }
 
 //    cudaMalloc(&roi_pointer, arraySize);
 //    cudaMemcpy(roi_pointer, roi_domain.data, arraySize, cudaMemcpyHostToDevice);
@@ -98,10 +98,11 @@ double GreyScaleCalculator::CUDA_greyscale() {
     //return (double)roi_sum/(double)arraySize;
 }
 
-void GreyScaleCalculator::data_convert(Mat data, const int32_t cols, const int32_t rows, const int32_t stride, uint8_t* const __restrict out) {
+void GreyScaleCalculator::data_convert(Mat data, const int32_t cols, const int32_t rows, const int32_t stride, double* const __restrict out) {
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
             out[i*stride + j] = data.at<Vec3b>(Point(i,j)).val[0];
+            cout << out[i*stride + j] << endl;
         }
     }
 }
