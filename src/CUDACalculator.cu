@@ -3,9 +3,7 @@
 //
 
 #include "CUDACalculator.h"
-#include <opencv2/opencv.hpp>
 
-using namespace cv;
 // define hardware dependent variables
 static const int blockSize = 1024;
 static const int gridSize = 12; //this number is hardware-dependent; usually #SM*2 is a good number.
