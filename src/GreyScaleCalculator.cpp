@@ -55,6 +55,7 @@ double GreyScaleCalculator::calc_greyscale(Mat image_in) {
 	//cout << "height: " << height << endl;
 	double grey_sum = 0.0;
 	double pixel_count = 0.0;
+	/*
 	for (int i = 0; i < width; i++) {
 		for (int j = 0; j < height; j++) {
 			Scalar pixel = this->get_pixel(image_in, this->origin[0] + i, this->origin[1] + j);
@@ -67,9 +68,17 @@ double GreyScaleCalculator::calc_greyscale(Mat image_in) {
 			pixel_count = pixel_count + 1.0;
 		}
 	}
+	 */
+    Rect ROI(this->origin[0], this->origin[1], this->dimension[0], this->dimension[1]);
+    Mat roi_domain(total_domain, ROI);
+    for(int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
+            grey_sum = grey_sum + roi_domain.at<Vec3b>(Point(i,j));
+        }
+    }
 	//cout<<"grey_sum: " << grey_sum << endl;
 	//cout<<"pixel_count: " << pixel_count << endl;
-	return grey_sum/pixel_count;
+	return grey_sum/double(width * height);
 }
 
 double GreyScaleCalculator::CUDA_greyscale() {
@@ -90,7 +99,7 @@ double GreyScaleCalculator::CUDA_greyscale() {
     cout << roi_sum << endl;
     cout << arraySize << endl;
     cout << "results from CPU" << endl;
-    cout << this->calc_greyscale(total_domain);
+    cout << this->calc_greyscale(total_domain) << endl;
     cout << "-------------------" << endl;
     delete roi_pointer;
     return roi_sum/(double)arraySize;
