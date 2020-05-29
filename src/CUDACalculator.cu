@@ -15,9 +15,6 @@ __global__ void sumCommMultiBlock(const long int *gArr, int arraySize, long int 
     const int gridSize = blockSize*gridDim.x;
     long int sum = 0;
     for (int i = gthIdx; i < arraySize; i += gridSize)
-        if(gArr[i] < 0) {
-            std::cout << gArr[i] << std::endl;
-        }
         sum += gArr[i];
     __shared__ long int shArr[blockSize];
     shArr[thIdx] = sum;
