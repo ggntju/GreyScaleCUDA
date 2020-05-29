@@ -4,16 +4,21 @@
 
 #include "CUDACalculator.h"
 
-__global__ void cuda_calculate_greyscale_kernel(const cudaTextureObject_t tex_img, const int pixels, int* const res) {
-    const unsigned int x = (blockIdx.x << 8) + threadIdx.x;
-    const int sub_res = tex1Dfetch<int>(tex_img, 3 * x) + tex1Dfetch<int>(tex_img, 3 * x + 1) + tex1Dfetch<int>(tex_img, 3 * x + 2);
-    if (x < pixels) {
-        res[0] = res[0] + sub_res;
+__global__ void sumCommMultiBlock(const int *gArr, int arraySize, int *gOut) {
+    int thIdx = threadIdx.x;
+    int gthIdx = thIdx + blockIdx.x*blockSize;
+    const int gridSize = blockSize*gridDim.x;
+    int sum = 0;
+    for (int i = gthIdx; i < arraySize; i += gridSize)
+        sum += gArr[i];
+    __shared__ int shArr[blockSize];
+    shArr[thIdx] = sum;
+    __syncthreads();
+    for (int size = blockSize/2; size>0; size/=2) { //uniform
+        if (thIdx<size)
+            shArr[thIdx] += shArr[thIdx+size];
+        __syncthreads();
     }
+    if (thIdx == 0)
+        gOut[blockIdx.x] = shArr[0];
 }
-
-void cuda_calculate_greyscale(const cudaTextureObject_t tex_img, const int pixels, int* const res) {
-    cuda_calculate_greyscale_kernel<<<((pixels - 1) >> 8) + 1, 1024>>>(tex_img, pixels, res);
-    cudaDeviceSynchronize();
-}
-

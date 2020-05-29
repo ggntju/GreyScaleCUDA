@@ -20,5 +20,4 @@
 #undef __CUDACC__
 #endif
 
-void cuda_calculate_greyscale(const cudaTextureObject_t tex_img, const int pixels, int* const res);
 #endif //GREYSCALECUDA_CUDACALCULATOR_H

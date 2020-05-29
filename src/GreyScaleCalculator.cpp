@@ -73,47 +73,35 @@ double GreyScaleCalculator::calc_greyscale(Mat image_in) {
 }
 
 double GreyScaleCalculator::CUDA_greyscale() {
+    // define hardware dependent variables
+    static const int blockSize = 1024;
+    static const int gridSize = 12; //this number is hardware-dependent; usually #SM*2 is a good number.
+
     Mat total_domain = this->open_image();
     Rect ROI(this->origin[0], this->origin[1], this->dimension[0], this->dimension[1]);
     Mat roi_domain(total_domain, ROI);
+    int arraySize = 3 * roi_domain.rows * roi_domain.cols;
     //cout << "ROI was selected" << endl;
 
     // setting cache and shared modes
     cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
     cudaDeviceSetSharedMemConfig(cudaSharedMemBankSizeEightByte);
+    // transfer data from host to device
+    int* img_in;
+    cudaMalloc(&img_in, arraySize);
+    cudaMemcpy(img_in, roi_domain.data, arraySize, cudaMemcpyHostToDevice);
 
-    // allocating and transferring image as texture object
-    uint8_t* d_img;
-    cudaMalloc(&d_img, 3*roi_domain.rows*roi_domain.cols);
-    cudaMemcpy(d_img, roi_domain.data, 3*roi_domain.rows*roi_domain.cols, cudaMemcpyHostToDevice);
-    struct cudaResourceDesc resDesc;
-    memset(&resDesc, 0, sizeof(resDesc));
-    resDesc.resType = cudaResourceTypeLinear;
-    resDesc.res.linear.devPtr = d_img;
-    resDesc.res.linear.desc.f = cudaChannelFormatKindUnsigned;
-    resDesc.res.linear.desc.x = 8;
-    resDesc.res.linear.sizeInBytes = 3 * roi_domain.rows * roi_domain.cols;
-
-    struct cudaTextureDesc texDesc;
-    memset(&texDesc, 0, sizeof(texDesc));
-    texDesc.addressMode[0] = texDesc.addressMode[1] = texDesc.addressMode[2] = texDesc.addressMode[3] = cudaAddressModeBorder;
-    texDesc.filterMode = cudaFilterModePoint;
-    texDesc.readMode = cudaReadModeElementType;
-    texDesc.normalizedCoords = 0;
-    cudaTextureObject_t tex_img = 0;
-    cudaCreateTextureObject(&tex_img, &resDesc, &texDesc, nullptr);
-    // Setup initial value
-    int* pixel_sum;
-    cudaMalloc(&pixel_sum, 1);
-    // Call CUDA function
-    cuda_calculate_greyscale(tex_img, roi_domain.rows * roi_domain.cols, pixel_sum);
-    int* pixel_sum_int = reinterpret_cast<int*>(malloc(1));
-    // Transfer data back to host
-    cudaMemcpy(pixel_sum_int, pixel_sum, 1, cudaMemcpyDeviceToHost);
-    cudaDeviceReset();
-    int pixel_sum_temp = pixel_sum_int[0];
-    free(pixel_sum_int);
-    return (double) pixel_sum_temp/ (double) (3 * roi_domain.rows * roi_domain.cols);
-
+    int roi_sum;
+    int* img_out;
+    cudaMalloc((void**)&img_out, sizeof(int)*gridSize);
+    // call the sum function
+    sumCommMultiBlock<<<gridSize, blockSize>>>(img_in, arraySize, img_out);
+    sumCommMultiBlock<<<1, blockSize>>>(img_out, gridSize, img_out);
+    cudaDeviceSynchronize();
+    // transfer data from device to host
+    cudaMemcpy(&roi_sum, img_out, sizeof(int), cudaMemcpyDeviceToHost);
+    cudaFree(img_in);
+    cudaFree(img_out);
+    return (double)roi_sum/(double)arraySize;
 }
 
