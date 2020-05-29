@@ -76,33 +76,20 @@ double GreyScaleCalculator::CUDA_greyscale() {
     Mat total_domain = this->open_image();
     Rect ROI(this->origin[0], this->origin[1], this->dimension[0], this->dimension[1]);
     Mat roi_domain(total_domain, ROI);
-    int arraySize = roi_domain.rows * roi_domain.cols * 3;
-
-    double* refresult = new double[roi_domain.cols*roi_domain.rows];
-    data_convert(roi_domain, roi_domain.cols, roi_domain.rows, roi_domain.cols, refresult);
-//    for(int i = 0; i < roi_domain.cols * roi_domain.rows; i++) {
-//        cout << refresult[i] << endl;
-//        // cin.get();
-//    }
-
-//    cudaMalloc(&roi_pointer, arraySize);
-//    cudaMemcpy(roi_pointer, roi_domain.data, arraySize, cudaMemcpyHostToDevice);
+    int arraySize = roi_domain.rows * roi_domain.cols;
+    double* roi_pointer = new double[roi_domain.cols*roi_domain.rows];
+    data_convert(roi_domain, roi_domain.cols, roi_domain.rows, roi_domain.cols, roi_pointer);
     // call cuda function
-    // long int roi_sum = sumArray(roi_pointer, arraySize);
-    //cudaFree(roi_pointer);
-    cout << "info" << endl;
-    //cout << roi_sum << endl;
-    //cout << arraySize << endl;
-    cout << "-------------------" << endl;
-    return 0.0;
-    //return (double)roi_sum/(double)arraySize;
+    double roi_sum = sumArray(roi_pointer, arraySize);
+//    cout << "info" << endl;
+//    cout << "-------------------" << endl;
+    return roi_sum/(double)arraySize;
 }
 
 void GreyScaleCalculator::data_convert(Mat data, const int32_t cols, const int32_t rows, const int32_t stride, double* const __restrict out) {
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
             out[i*stride + j] = data.at<Vec3b>(Point(i,j)).val[0];
-            cout << out[i*stride + j] << endl;
         }
     }
 }
