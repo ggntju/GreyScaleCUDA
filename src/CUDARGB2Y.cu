@@ -39,13 +39,13 @@ constexpr int R_WT = static_cast<int>(64.0 * R_WEIGHT + 0.5);
 
 template<bool weight>
 __global__ void CUDARGB2Y_kernel(const cudaTextureObject_t tex_img, const int pixels, uint8_t* const __restrict d_newimg) {
-	const unsigned int x = (blockIdx.x << 8) + threadIdx.x;
+	const unsigned int x = (blockIdx.x << 10) + threadIdx.x;
 	const uint8_t res = weight ? min(255, (B_WT*tex1Dfetch<int>(tex_img, 3 * x) + G_WT*tex1Dfetch<int>(tex_img, 3 * x + 1) + R_WT*tex1Dfetch<int>(tex_img, 3 * x + 2)) >> 6)
 		: (tex1Dfetch<int>(tex_img, 3 * x) + tex1Dfetch<int>(tex_img, 3 * x + 1) + tex1Dfetch<int>(tex_img, 3 * x + 2)) / 3;
 	if (x < pixels) d_newimg[x] = res;
 }
 
 void CUDARGB2Y(bool weight, const cudaTextureObject_t tex_img, const int pixels, uint8_t* const __restrict d_newimg) {
-	(weight ? CUDARGB2Y_kernel<true> : CUDARGB2Y_kernel<false>)<<<((pixels - 1) >> 8) + 1, 256>>>(tex_img, pixels, d_newimg);
+	(weight ? CUDARGB2Y_kernel<true> : CUDARGB2Y_kernel<false>)<<<((pixels - 1) >> 10) + 1, 1024>>>(tex_img, pixels, d_newimg);
 	cudaDeviceSynchronize();
 }
