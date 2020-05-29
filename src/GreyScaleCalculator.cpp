@@ -77,9 +77,10 @@ double GreyScaleCalculator::CUDA_greyscale() {
     Rect ROI(this->origin[0], this->origin[1], this->dimension[0], this->dimension[1]);
     Mat roi_domain(total_domain, ROI);
     int arraySize = roi_domain.rows * roi_domain.cols * 3;
-    uint8_t* roi_pointer = (uint8_t*) roi_domain.data;
-    for(int i = 0; i < arraySize; i++) {
-        cout << roi_pointer[i] << endl;
+    uint8_t* refresult = new uint8_t[image.cols*image.rows];
+    RGB2Y_ref(roi_domain.data, roi_domain.cols, roi_domain.rows, roi_domain.cols, refresult);
+    for(int i = 0; i < roi_domain.cols * roi_domain.rows; i++) {
+        cout << refresult[i] << endl;
         // cin.get();
     }
 
@@ -94,5 +95,14 @@ double GreyScaleCalculator::CUDA_greyscale() {
     cout << "-------------------" << endl;
     return 0.0;
     //return (double)roi_sum/(double)arraySize;
+}
+
+void RGB2Y_ref(const uint8_t* __restrict const data, const int32_t cols, const int32_t rows, const int32_t stride, uint8_t* const __restrict out) {
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            const auto idx = 3 * (i*stride + j);
+            out[i*stride + j] = (static_cast<uint32_t>(data[idx]) + static_cast<uint32_t>(data[idx + 1]) + static_cast<uint32_t>(data[idx + 2])) / 3;
+        }
+    }
 }
 
