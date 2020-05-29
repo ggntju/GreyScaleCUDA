@@ -6,7 +6,7 @@
 
 // define hardware dependent variables
 static const int blockSize = 1024;
-static const int gridSize = 12; //this number is hardware-dependent; usually #SM*2 is a good number.
+static const int gridSize = 24; //this number is hardware-dependent; usually #SM*2 is a good number.
 
 __global__ void sumCommMultiBlock(const long int *gArr, int arraySize, long int *gOut) {
     int thIdx = threadIdx.x;
