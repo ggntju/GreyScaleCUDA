@@ -77,10 +77,12 @@ double GreyScaleCalculator::CUDA_greyscale() {
     Rect ROI(this->origin[0], this->origin[1], this->dimension[0], this->dimension[1]);
     Mat roi_domain(total_domain, ROI);
     int arraySize = roi_domain.rows * roi_domain.cols * 3;
+    uint8_t* roi_pointer = (uint8_t*) roi_domain.data;
     for(int i = 0; i < arraySize; i++) {
-        cout << roi_domain.data[i] << endl;
+        cout << roi_pointer[i] << endl;
         // cin.get();
     }
+
 //    cudaMalloc(&roi_pointer, arraySize);
 //    cudaMemcpy(roi_pointer, roi_domain.data, arraySize, cudaMemcpyHostToDevice);
     // call cuda function
