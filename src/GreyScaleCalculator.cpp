@@ -97,7 +97,7 @@ double GreyScaleCalculator::CUDA_greyscale() {
     //return (double)roi_sum/(double)arraySize;
 }
 
-void RGB2Y_ref(const uint8_t* __restrict const data, const int32_t cols, const int32_t rows, const int32_t stride, uint8_t* const __restrict out) {
+void GreyScaleCalculator::RGB2Y_ref(const uint8_t* __restrict const data, const int32_t cols, const int32_t rows, const int32_t stride, uint8_t* const __restrict out) {
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
             const auto idx = 3 * (i*stride + j);
