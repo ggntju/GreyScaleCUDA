@@ -70,7 +70,7 @@ double GreyScaleCalculator::calc_greyscale(Mat image_in) {
 	}
 	 */
     Rect ROI(this->origin[0], this->origin[1], this->dimension[0], this->dimension[1]);
-    Mat roi_domain(total_domain, ROI);
+    Mat roi_domain(image_in, ROI);
     for(int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
             grey_sum = grey_sum + roi_domain.at<Vec3b>(Point(i,j)).val[0];
