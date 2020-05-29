@@ -81,7 +81,7 @@ double GreyScaleCalculator::CUDA_greyscale() {
     cudaMalloc(&roi_pointer, arraySize);
     cudaMemcpy(roi_pointer, roi_domain.data, arraySize, cudaMemcpyHostToDevice);
     // call cuda function
-    int roi_sum = sumArray(roi_domain, arraySize);
+    int roi_sum = sumArray(roi_pointer, arraySize);
     cudaFree(roi_pointer);
     return (double)roi_sum/(double)arraySize;
 }
