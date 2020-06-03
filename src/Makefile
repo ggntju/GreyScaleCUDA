@@ -1,5 +1,5 @@
 EXECUTABLE_NAME=RGB2GREY
-CPP=g++
+CPP=mpic++
 NVCC=nvcc
 ARCH=sm_53
 INC=-I/usr/local/cuda/include/ -I/usr/local/include/opencv4
