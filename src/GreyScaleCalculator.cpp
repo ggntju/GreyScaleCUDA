@@ -1,4 +1,5 @@
 #include <opencv2/opencv.hpp>
+#include "mpi.h"
 #include "GreyScaleCalculator.h"
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
