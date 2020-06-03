@@ -121,7 +121,7 @@ void GreyScaleCalculator::data_convert(Mat data, const int32_t cols, const int32
 //            cout << data.at<Vec3b>(Point(i, j)).val[1] << endl;
 //            cout << data.at<Vec3b>(Point(i, j)).val[2] << endl;
 //            cout << "----------------" << endl;
-            out[i*stride + j] = data.at<Vec3b>(Point(i,j)).val[0];
+            out[i*stride + j] = data.at<Vec3b>(i,j).val[0];
         }
     }
 }
