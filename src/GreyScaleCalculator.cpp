@@ -94,7 +94,12 @@ double GreyScaleCalculator::CUDA_greyscale() {
 //    cout << "---------------------" << endl;
     int arraySize = roi_domain.rows * roi_domain.cols;
     double* roi_pointer = new double[roi_domain.cols*roi_domain.rows];
+    // Call MPI initialization
+    MPI_Init(NULL, NULL);
     data_convert(roi_domain, roi_domain.cols, roi_domain.rows, roi_domain.cols, roi_pointer);
+    // Call MPI_Finalize
+    MPI_Finalize();
+
 //    for(int i = 0; i< arraySize; i++) {
 //        cout << roi_pointer[i] << endl;
 //    }
@@ -116,8 +121,7 @@ double GreyScaleCalculator::CUDA_greyscale() {
 
 void GreyScaleCalculator::data_convert(Mat data, const int32_t cols, const int32_t rows, const int32_t stride, double* const __restrict out) {
 
-    // Call MPI initialization
-    MPI_Init(NULL, NULL);
+
     // Get my processor ID and number of processor
     int myProcID;
     int numProcs;
@@ -154,8 +158,7 @@ void GreyScaleCalculator::data_convert(Mat data, const int32_t cols, const int32
             break;
     }
 
-    // Call MPI_Finalize
-    MPI_Finalize();
+
 }
 
 void GreyScaleCalculator::roi_domain_test() {
