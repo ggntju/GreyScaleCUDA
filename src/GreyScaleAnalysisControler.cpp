@@ -35,6 +35,8 @@ Mat GreyScaleAnalysisControler::get_histogram() {
 	cout << to_string(n_files) + " files found!" << endl;
 	cout << to_string(n_origins) + " ROIs found!" << endl;
 	double histogram_data[n_files][n_origins];
+    // Call MPI initialization
+    MPI_Init(NULL, NULL);
 	for(int i = 0; i < n_files; i++) {
 		//std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 		for (int j = 0; j < n_origins; j++) {
@@ -49,6 +51,8 @@ Mat GreyScaleAnalysisControler::get_histogram() {
 		//std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 		//std::cout << "Time difference (sec) = " << (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) /1000000.0 <<std::endl;
 	}
+    // Call MPI_Finalize
+    MPI_Finalize();
 	Mat result(n_files, n_origins, CV_64F);
 	std::memcpy(result.data, histogram_data, n_files*n_origins*sizeof(double));
 	return result;

@@ -94,11 +94,9 @@ double GreyScaleCalculator::CUDA_greyscale() {
 //    cout << "---------------------" << endl;
     int arraySize = roi_domain.rows * roi_domain.cols;
     double* roi_pointer = new double[roi_domain.cols*roi_domain.rows];
-    // Call MPI initialization
-    MPI_Init(NULL, NULL);
+
     data_convert(roi_domain, roi_domain.cols, roi_domain.rows, roi_domain.cols, roi_pointer);
-    // Call MPI_Finalize
-    MPI_Finalize();
+
 
 //    for(int i = 0; i< arraySize; i++) {
 //        cout << roi_pointer[i] << endl;
