@@ -114,16 +114,47 @@ double GreyScaleCalculator::CUDA_greyscale() {
 }
 
 void GreyScaleCalculator::data_convert(Mat data, const int32_t cols, const int32_t rows, const int32_t stride, double* const __restrict out) {
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < cols; ++j) {
-//            cout << "info" << endl;
-//            cout << data.at<Vec3b>(Point(i, j)).val[0] << endl;
-//            cout << data.at<Vec3b>(Point(i, j)).val[1] << endl;
-//            cout << data.at<Vec3b>(Point(i, j)).val[2] << endl;
-//            cout << "----------------" << endl;
-            out[i*stride + j] = data.at<Vec3b>(Point(i,j)).val[0];
-        }
+
+    // Call MPI initialization
+    MPI_Init(NULL, NULL);
+    // Get my processor ID and number of processor
+    int myProcID;
+    int numProcs;
+    MPI_Comm_rank(MPI_COMM_WORLD, &myProcID);
+    MPI_Comm_size(MPI_COMM_WORLD, &numProcs);
+    switch(myProcID) {
+        case 0 :
+            for (int i = 0; i <= (int)rows/2 - 1; i++) {
+                for (int j = 0; j <= (int)cols/2 - 1; j++) {
+                    out[i*stride + j] = data.at<Vec3b>(Point(i,j)).val[0];
+                }
+            }
+            break;
+        case 1 :
+            for (int i = (int)rows/2; i <= (int)rows - 1; i++) {
+                for (int j = 0; j <= (int)cols/2 - 1; j++) {
+                    out[i*stride + j] = data.at<Vec3b>(Point(i,j)).val[0];
+                }
+            }
+            break;
+        case 2 :
+            for (int i = 0; i <= (int)rows/2 - 1; i++) {
+                for (int j = (int)cols/2; j <= (int)cols - 1; j++) {
+                    out[i*stride + j] = data.at<Vec3b>(Point(i,j)).val[0];
+                }
+            }
+            break;
+        case 3 :
+            for (int i = (int)rows/2; i <= (int)rows - 1; i++) {
+                for (int j = (int)cols/2; j <= (int)cols - 1; j++) {
+                    out[i*stride + j] = data.at<Vec3b>(Point(i,j)).val[0];
+                }
+            }
+            break;
     }
+
+    // Call MPI_Finalize
+    MPI_Finalize();
 }
 
 void GreyScaleCalculator::roi_domain_test() {
