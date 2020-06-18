@@ -9,6 +9,7 @@ using namespace cv;
 using namespace std;
 
 Mat InputFileReader::readOrigins() {
+    Mat origins;
     // File pointer
     fstream fin;
     // Open existing file
@@ -30,8 +31,11 @@ Mat InputFileReader::readOrigins() {
     for (int i = 0; i < 4; i++) {
         cout << row[i] << endl;
     }
+    return origins;
 }
 
 Mat InputFileReader::readDimensions() {
+    Mat dimensions;
 
+    return dimensions;
 }

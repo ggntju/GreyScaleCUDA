@@ -9,6 +9,9 @@ using namespace cv;
 using namespace std;
 int main( int argc, char** argv )
 {
+    // Read data from file
+    InputFileReader inputFileReader;
+    inputFileReader.readOrigins();
     // warm up the GPU
     std::chrono::steady_clock::time_point warmup_begin = std::chrono::steady_clock::now();
     GPUWarmer gpuWarmer;
