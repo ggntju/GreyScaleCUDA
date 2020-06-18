@@ -28,10 +28,12 @@ Mat InputFileReader::readOrigins() {
     while (getline(s, word, ',')) {
         row.push_back(word);
     }
-    cout << "Print contents from File reader" << endl;
-    for (int i = 0; i < 4; i++) {
-        cout << row[i] << endl;
-    }
+//    cout << "Print contents from File reader" << endl;
+//    for (int i = 0; i < 4; i++) {
+//        cout << row[i] << endl;
+//    }
+    origins(row, true);
+    cout << "origins: " << origins << endl;
     return origins;
 }
 
