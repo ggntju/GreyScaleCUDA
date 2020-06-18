@@ -34,6 +34,7 @@ Mat InputFileReader::readOrigins() {
     Mat origins(row);
     origins.reshape(0, 2);
     cout << "origins: " << origins << endl;
+    cout << "size of origins: " << origins.size << endl;
     return origins;
 }
 
