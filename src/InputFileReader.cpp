@@ -27,19 +27,30 @@ Mat InputFileReader::readOrigins() {
     while (getline(s, word, ',')) {
         row.push_back(stof(word));
     }
-//    cout << "Print contents from File reader" << endl;
-//    for (int i = 0; i < 4; i++) {
-//        cout << row[i] << endl;
-//    }
     Mat origins(row);
     origins = origins.reshape(0, 2);
-    cout << "origins: " << origins << endl;
-    cout << "size of origins: " << origins.size << endl;
     return origins;
 }
 
 Mat InputFileReader::readDimensions() {
-    Mat dimensions;
-
+    // File pointer
+    fstream fin;
+    // Open existing file
+    fin.open("../Input/dimensions.csv", ios::in);
+    // Read the data from file as string vector
+    vector<float> row;
+    string line, word;
+    // Clear it first
+    row.clear();
+    // Read the entire row
+    getline(fin, line);
+    // Used for breaking words
+    stringstream s(line);
+    // Read data by column
+    while (getline(s, word, ',')) {
+        row.push_back(stof(word));
+    }
+    Mat dimensions(row);
+    dimensions = dimensions.reshape(0, 2);
     return dimensions;
 }
