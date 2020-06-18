@@ -111,7 +111,7 @@ void GreyScaleAnalysisControler::write2CSV(Mat data_in) {
 	int rows = data_in.rows;
 	int cols = data_in.cols;
 	std::ofstream myfile;
-	myfile.open ("../Out/result.csv");
+	myfile.open ("../Output/result.csv");
 	for(int i = 0; i < rows; i++) {
 		for (int j = 0; j < cols; j++) {
 			myfile << to_string(data_in.at<double>(i,j)) + ",";
