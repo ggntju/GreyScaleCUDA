@@ -25,7 +25,7 @@ Mat InputFileReader::readOrigins() {
     // Used for breaking words
     stringstream s(line);
     // Read data by column
-    while (std::getline(s, word, ', ')) {
+    while (getline(s, word, ',')) {
         row.push_back(word);
     }
     cout << "Print contents from File reader" << endl;
