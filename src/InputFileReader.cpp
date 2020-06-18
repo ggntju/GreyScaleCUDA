@@ -15,7 +15,7 @@ Mat InputFileReader::readOrigins() {
     // Open existing file
     fin.open("../Input/origins.csv", ios::in);
     // Read the data from file as string vector
-    vector<double> row;
+    vector<float> row;
     string line, word;
     // Clear it first
     row.clear();
