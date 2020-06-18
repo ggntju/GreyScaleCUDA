@@ -32,7 +32,7 @@ Mat InputFileReader::readOrigins() {
 //    for (int i = 0; i < 4; i++) {
 //        cout << row[i] << endl;
 //    }
-    origins(row, true);
+    origins(row);
     cout << "origins: " << origins << endl;
     return origins;
 }
