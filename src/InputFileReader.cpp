@@ -2,8 +2,8 @@
 // Created by Guannan Guo on 6/17/20.
 //
 
-#include "InputFileReader.h"
 #include <opencv2/opencv.hpp>
+#include "InputFileReader.h"
 
 using namespace cv;
 using namespace std;

@@ -1,6 +1,7 @@
 
 #include <opencv2/opencv.hpp>
 #include <chrono>
+#include "InputFileReader.h"
 #include "GPUWarmer.h"
 #include "GreyScaleCalculator.h"
 #include "GreyScaleAnalysisControler.h"
