@@ -9,30 +9,24 @@ using namespace cv;
 using namespace std;
 int main( int argc, char** argv )
 {
-    // Read data from file
+    // read data from file
     InputFileReader inputFileReader;
-    inputFileReader.readOrigins();
+    Mat origins = inputFileReader.readOrigins();
+    Mat dimensions = inputFileReader.readDimensions();
     // warm up the GPU
     std::chrono::steady_clock::time_point warmup_begin = std::chrono::steady_clock::now();
     GPUWarmer gpuWarmer;
     gpuWarmer.warmUp();
     std::chrono::steady_clock::time_point warmup_end = std::chrono::steady_clock::now();
     std::cout << "Warm up GPU takes time (sec) = " << (std::chrono::duration_cast<std::chrono::microseconds>(warmup_end - warmup_begin).count()) /1000000.0 <<std::endl;
-    // start to count
+    // start to calculate time cost
 	std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-    Mat origins = (Mat_<double>(2,2) << 20.0, 75.0, 190.0, 340.0);
-    Mat dimensions = (Mat_<double>(2,2) << 290.0, 75.0, 90.0, 50.0);
-    // Mat origins = (Mat_<double>(1,2) << 190.0, 340.0);
-    // Mat dimensions = (Mat_<double>(1,2) << 90.0, 50.0);
-    // Mat origins = (Mat_<double>(1,2) << 20.0, 75.0);
-    // Mat dimensions = (Mat_<double>(1,2) << 290.0, 75.0);
+	// create controler to get histogram data
 	GreyScaleAnalysisControler controler(origins, dimensions, "../ImageData", "bmp");
-	//controler.print2Console();
 	Mat histData = controler.get_histogram();
-//	cout << histData.cols << endl;
-//	cout << histData.rows << endl;
-	//cout << histData << endl;
 	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+	// display the actual time cost to console
 	std::cout << "Actual calculation takes time (sec) = " << (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) /1000000.0 <<std::endl;
+	// write the data into a CSV file
     controler.write2CSV(histData);
 }
