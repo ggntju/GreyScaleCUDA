@@ -15,7 +15,7 @@ Mat InputFileReader::readOrigins() {
     // Open existing file
     fin.open("../Input/origins.csv", ios::in);
     // Read the data from file as string vector
-    vector<float> row;
+    vector<double> row;
     string line, word;
     // Clear it first
     row.clear();
@@ -25,7 +25,7 @@ Mat InputFileReader::readOrigins() {
     stringstream s(line);
     // Read data by column
     while (getline(s, word, ',')) {
-        row.push_back(stof(word));
+        row.push_back(stod(word));
     }
     Mat origins(row);
     origins = origins.reshape(0, 2);
@@ -38,7 +38,7 @@ Mat InputFileReader::readDimensions() {
     // Open existing file
     fin.open("../Input/dimensions.csv", ios::in);
     // Read the data from file as string vector
-    vector<float> row;
+    vector<double> row;
     string line, word;
     // Clear it first
     row.clear();
@@ -48,7 +48,7 @@ Mat InputFileReader::readDimensions() {
     stringstream s(line);
     // Read data by column
     while (getline(s, word, ',')) {
-        row.push_back(stof(word));
+        row.push_back(stod(word));
     }
     Mat dimensions(row);
     dimensions = dimensions.reshape(0, 2);
