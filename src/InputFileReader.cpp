@@ -27,11 +27,11 @@ Mat InputFileReader::readOrigins() {
     while (getline(s, word, ',')) {
         row.push_back(stod(word));
     }
-//    Mat origins(row);
+    Mat_<double> origins(row);
 //    cout << "Origins in file reader: " << "\n" << origins << endl;
 //    origins = origins.reshape(0, 2);
 //    cout << "Origins after reshape: " << "\n" << origins << endl;
-    Mat origins = (Mat_<double>(2,2) << 20.0, 75.0, 190.0, 340.0);
+    // Mat origins = (Mat_<double>(2,2) << 20.0, 75.0, 190.0, 340.0);
     return origins;
 }
 
