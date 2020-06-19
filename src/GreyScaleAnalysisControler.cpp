@@ -40,8 +40,8 @@ Mat GreyScaleAnalysisControler::get_histogram() {
 		for (int j = 0; j < n_origins; j++) {
 			string filename = this->get_filename(i, this->file_format);
 			cout << "Processing " + filename + " ROI " + to_string(j) << endl;
-			double origin[2] = {this->origins.at<float>(j,0), this->origins.at<float>(j,1)};
-			double dimension[2] = {this->dimensions.at<float>(j,0), this->dimensions.at<float>(j,1)};
+			double origin[2] = {(double)this->origins.at<float>(j,0), (double)this->origins.at<float>(j,1)};
+			double dimension[2] = {(double)this->dimensions.at<float>(j,0), (double)this->dimensions.at<float>(j,1)};
 			GreyScaleCalculator calculator("../ImageData/" + filename, origin, dimension);
 			calculator.printInfo();
 			double calc_result = calculator.CUDA_greyscale();
