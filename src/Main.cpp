@@ -11,8 +11,10 @@ int main( int argc, char** argv )
 {
     // read data from file
     InputFileReader inputFileReader;
-    Mat origins = inputFileReader.readOrigins();
-    Mat dimensions = inputFileReader.readDimensions();
+    // Mat origins = inputFileReader.readOrigins();
+    // Mat dimensions = inputFileReader.readDimensions();
+    Mat origins = (Mat_<double>(2,2) << 20.0, 75.0, 190.0, 340.0);
+    Mat dimensions = (Mat_<double>(2,2) << 290.0, 75.0, 90.0, 50.0);
     // display the input info to console
     cout << "Origins size: " << origins.size << endl;
     cout << "Dimensions size: " << dimensions.size << endl;
