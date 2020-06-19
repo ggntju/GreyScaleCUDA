@@ -30,6 +30,7 @@ Mat InputFileReader::readOrigins() {
     Mat origins(row);
     cout << "Origins in file reader: " << origins << endl;
     origins = origins.reshape(0, 2);
+    cout << "Origins after reshape: " << origins << endl;
     return origins;
 }
 
@@ -54,5 +55,6 @@ Mat InputFileReader::readDimensions() {
     Mat dimensions(row);
     cout << "Dimensions in file reader: " << dimensions << endl;
     dimensions = dimensions.reshape(0, 2);
+    cout << "Dimensions after reshape: " << dimensions << endl;
     return dimensions;
 }
