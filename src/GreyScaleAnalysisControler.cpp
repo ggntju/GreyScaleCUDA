@@ -43,6 +43,7 @@ Mat GreyScaleAnalysisControler::get_histogram() {
 			double origin[2] = {this->origins.at<float>(j,0), this->origins.at<float>(j,1)};
 			double dimension[2] = {this->dimensions.at<float>(j,0), this->dimensions.at<float>(j,1)};
 			GreyScaleCalculator calculator("../ImageData/" + filename, origin, dimension);
+			calculator.printInfo();
 			double calc_result = calculator.CUDA_greyscale();
 			histogram_data[i][j] = calc_result;
 		}
