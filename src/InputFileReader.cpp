@@ -28,6 +28,7 @@ Mat InputFileReader::readOrigins() {
         row.push_back(stod(word));
     }
     Mat origins(row);
+    cout << "Origins in file reader: " << origins << endl;
     origins = origins.reshape(0, 2);
     return origins;
 }
@@ -51,6 +52,7 @@ Mat InputFileReader::readDimensions() {
         row.push_back(stod(word));
     }
     Mat dimensions(row);
+    cout << "Dimensions in file reader: " << dimensions << endl;
     dimensions = dimensions.reshape(0, 2);
     return dimensions;
 }
