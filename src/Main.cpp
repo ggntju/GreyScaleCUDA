@@ -16,8 +16,8 @@ int main( int argc, char** argv )
     // display the input info to console
     cout << "Origins size: " << origins.size << endl;
     cout << "Dimensions size: " << dimensions.size << endl;
-    cout << "Origins: " << origins << endl;
-    cout << "Dimensions: " << dimensions << endl;
+    cout << "Origins: " << "\n" << origins << endl;
+    cout << "Dimensions: " << "\n" << dimensions << endl;
     // warm up the GPU
     std::chrono::steady_clock::time_point warmup_begin = std::chrono::steady_clock::now();
     GPUWarmer gpuWarmer;
