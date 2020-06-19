@@ -29,10 +29,10 @@ int main( int argc, char** argv )
 	// create controler to get histogram data
 	GreyScaleAnalysisControler controler(origins, dimensions, "../ImageData", "bmp");
 	controler.print2Console();
-	Mat histData = controler.get_histogram();
+	// Mat histData = controler.get_histogram();
 	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 	// display the actual time cost to console
 	std::cout << "Actual calculation takes time (sec) = " << (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) /1000000.0 <<std::endl;
 	// write the data into a CSV file
-    controler.write2CSV(histData);
+    // controler.write2CSV(histData);
 }
