@@ -13,6 +13,9 @@ int main( int argc, char** argv )
     InputFileReader inputFileReader;
     Mat origins = inputFileReader.readOrigins();
     Mat dimensions = inputFileReader.readDimensions();
+    // display the input size to console
+    cout << "Origins size: " << origins.size << endl;
+    cout << "Dimensions size: " << dimensions.size << endl;
     // warm up the GPU
     std::chrono::steady_clock::time_point warmup_begin = std::chrono::steady_clock::now();
     GPUWarmer gpuWarmer;
