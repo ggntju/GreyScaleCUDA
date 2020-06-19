@@ -28,7 +28,7 @@ int main( int argc, char** argv )
 	std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 	// create controler to get histogram data
 	GreyScaleAnalysisControler controler(origins, dimensions, "../ImageData", "bmp");
-	controler.print2Console();
+	// controler.print2Console();
 	// Mat histData = controler.get_histogram();
 	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 	// display the actual time cost to console

@@ -27,11 +27,11 @@ Mat InputFileReader::readOrigins() {
     while (getline(s, word, ',')) {
         row.push_back(stod(word));
     }
-    Mat_<double> origins_reader(row);
-    cout << "Origins in file reader: " << "\n" << origins_reader << endl;
-    origins_reader = origins_reader.reshape(0, 2);
-    cout << "Origins after reshape: " << "\n" << origins_reader << endl;
-    // Mat origins = (Mat_<double>(2,2) << 20.0, 75.0, 190.0, 340.0);
+//    Mat_<double> origins_reader(row);
+//    cout << "Origins in file reader: " << "\n" << origins_reader << endl;
+//    origins_reader = origins_reader.reshape(0, 2);
+//    cout << "Origins after reshape: " << "\n" << origins_reader << endl;
+    Mat origins_reader = (Mat_<double>(2,2) << 20.0, 75.0, 190.0, 340.0);
     return origins_reader;
 }
 
@@ -53,10 +53,10 @@ Mat InputFileReader::readDimensions() {
     while (getline(s, word, ',')) {
         row.push_back(stod(word));
     }
-//    Mat dimensions(row);
-//    cout << "Dimensions in file reader: " << "\n" << dimensions << endl;
-//    dimensions = dimensions.reshape(0, 2);
-//    cout << "Dimensions after reshape: " << "\n" << dimensions << endl;
-    Mat dimensions = (Mat_<double>(2,2) << 290.0, 75.0, 90.0, 50.0);
-    return dimensions;
+//    Mat dimensions_reader(row);
+//    cout << "Dimensions in file reader: " << "\n" << dimensions_reader << endl;
+//    dimensions_reader = dimensions_reader.reshape(0, 2);
+//    cout << "Dimensions after reshape: " << "\n" << dimensions_reader << endl;
+    Mat dimensions_reader = (Mat_<double>(2,2) << 290.0, 75.0, 90.0, 50.0);
+    return dimensions_reader;
 }

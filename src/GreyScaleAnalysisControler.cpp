@@ -22,11 +22,11 @@ void GreyScaleAnalysisControler::print2Console() {
 	cout<< "print origins" <<endl;
 	cout<< "x: " << this->origins.at<double>(0, 0) <<" y: " << this->origins.at<double>(0, 1) << endl;
 	cout<< "x: " << this->origins.at<double>(1, 0) <<" y: " << this->origins.at<double>(1, 1) << endl;
-	//cout<< "x: " << this->origins.at<double>(2, 0) <<" y: " << this->origins.at<double>(2, 1) << endl;
+	// cout<< "x: " << this->origins.at<double>(2, 0) <<" y: " << this->origins.at<double>(2, 1) << endl;
 	cout<< "print dimensions" <<endl;
 	cout<< "x: " << this->dimensions.at<double>(0, 0) <<" y: " << this->dimensions.at<double>(0, 1) << endl;
 	cout<< "x: " << this->dimensions.at<double>(1, 0) <<" y: " << this->dimensions.at<double>(1, 1) << endl;
-	//cout<< "x: " << this->dimensions.at<double>(2, 0) <<" y: " << this->dimensions.at<double>(2, 1) << endl;
+	// cout<< "x: " << this->dimensions.at<double>(2, 0) <<" y: " << this->dimensions.at<double>(2, 1) << endl;
 }
 
 Mat GreyScaleAnalysisControler::get_histogram() {
@@ -36,10 +36,10 @@ Mat GreyScaleAnalysisControler::get_histogram() {
 	cout << to_string(n_origins) + " ROIs found!" << endl;
 	double histogram_data[n_files][n_origins];
 	for(int i = 0; i < n_files; i++) {
-		//std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+		// std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 		for (int j = 0; j < n_origins; j++) {
 			string filename = this->get_filename(i, this->file_format);
-			cout << "Processing " + filename + " ROI " + to_string(j) << endl;
+			// cout << "Processing " + filename + " ROI " + to_string(j) << endl;
 			double origin[2] = {this->origins.at<double>(j,0), this->origins.at<double>(j,1)};
 			double dimension[2] = {this->dimensions.at<double>(j,0), this->dimensions.at<double>(j,1)};
 			GreyScaleCalculator calculator("../ImageData/" + filename, origin, dimension);
@@ -47,8 +47,8 @@ Mat GreyScaleAnalysisControler::get_histogram() {
 			double calc_result = calculator.CUDA_greyscale();
 			histogram_data[i][j] = calc_result;
 		}
-		//std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-		//std::cout << "Time difference (sec) = " << (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) /1000000.0 <<std::endl;
+		// std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		// std::cout << "Time difference (sec) = " << (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) /1000000.0 <<std::endl;
 	}
 	Mat result(n_files, n_origins, CV_64F);
 	std::memcpy(result.data, histogram_data, n_files*n_origins*sizeof(double));
